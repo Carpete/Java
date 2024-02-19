@@ -1,7 +1,7 @@
 public class Date {
 
-    int month;
     int day;
+    int month;
     int year;
 
     public Date(int month, int day, int year) {
@@ -26,6 +26,7 @@ public class Date {
     }
 
     public String toString() {
+
         return month + "/" + day + "/" + year;
     }
 
@@ -89,16 +90,23 @@ public class Date {
     }
 
     public int daysBetween(Date other) {
-        if (before(other))
-
-        else
-            return (365 * year + 31 * month + day - 365 * other.year + 31 * other.month + other.day) * -1;
+        int count = daysSinceBeginYear() - other.daysSinceBeginYear();
+        int years = other.year - year;
+            for(int i = years; i >= 1; i--) {
+                if(i % 4 == 0) {
+                    count += 366;
+                }
+                else
+                    count += 365;
+            }
+        return before(other) ? count : count * (-1);
     }
 
 
     public static void main(String[] args) {
-        Date c = new Date(8, 10, 2024);
-        int test =  c.daysUntilEndYear();
+        Date c = new Date(8, 10, 1997);
+        Date other = new Date(8,11,1999);
+        int test =  c.daysBetween(other);
         System.out.println(test);
     }
 
