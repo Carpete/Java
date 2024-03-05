@@ -1,10 +1,9 @@
 public class ResizingArrayQueueOfStrings {
 
     private String[] queue;
-    private int N = 0;
+    private int first, last;
     public ResizingArrayQueueOfStrings() {
-        queue = new String[1];
-        N = queue.length;
+        queue = new String[last];
     }
 
     public void enqueue(String item) {
@@ -12,6 +11,7 @@ public class ResizingArrayQueueOfStrings {
             queue[N++] = item;
         }
     }
+
 
     public String dequeue() {
         if(N == 0) {
@@ -40,6 +40,11 @@ public class ResizingArrayQueueOfStrings {
         }
         queue[0] = item;
     }
+
+    public void resize(int capacity) {
+
+    }
+
 
     public static void main(String[] args) {
 
