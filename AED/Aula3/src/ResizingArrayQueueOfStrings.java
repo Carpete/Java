@@ -3,46 +3,59 @@ public class ResizingArrayQueueOfStrings {
     private String[] queue;
     private int first, last;
     public ResizingArrayQueueOfStrings() {
-        queue = new String[last];
+        queue = new String[2];
+        last = 0; first = 0;
     }
 
     public void enqueue(String item) {
-        if(N == queue.length) {
-            queue[N++] = item;
+        if (last == queue.length) {
+            resize(2 * queue.length);
         }
+        queue[last++] = item;
     }
 
 
     public String dequeue() {
-        if(N == 0) {
-            System.out.println("A string já está vazia.");
+        if (isEmpty()) {
+            throw new IllegalStateException("Queue underflow ...");
         }
-        String item = queue[0];
-        for(int i = 0; i < N - 1; i++) {
-            queue[i] = queue[i + 1];
-        }
-        queue[--N] = null;
+        String item = queue[first];
+        queue[first++] = null;
+        if(last - first < queue.length / 4)
+            resize(queue.length / 2);
         return item;
     }
 
     public boolean isEmpty() {
-        return N == 0;
+        return first == last;
     }
 
     public int size() {
-        return queue.length;
+        if(first <= last)
+            return first - last;
+        else
+            return queue.length - first + last;
+
+
     }
 
     public void shift() {
-        String item = queue[N - 1];
-        for(int i = 0; i < N - 1; i++) {
+        String l = queue[last];
+        for(int i = first; i < last; i++) {
             queue[i] = queue[i + 1];
         }
-        queue[0] = item;
+        queue[first] = l;
+        last++;
     }
 
     public void resize(int capacity) {
-
+        String[] a = new String[capacity];
+        for(int i = first; i < last; i++) {
+            a[i - first] = queue[i];
+        }
+        queue = a;
+        last = last - first;
+        first = 0;
     }
 
 
